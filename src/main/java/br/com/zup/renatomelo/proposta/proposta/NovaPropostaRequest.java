@@ -1,8 +1,6 @@
 package br.com.zup.renatomelo.proposta.proposta;
 
-import org.hibernate.validator.internal.constraintvalidators.hv.br.CNPJValidator;
-import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator;
-import org.springframework.util.Assert;
+import br.com.zup.renatomelo.proposta.proposta.validation.CpfCnpjValido;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +11,7 @@ import java.math.BigDecimal;
 public class NovaPropostaRequest {
 
     @NotBlank
+    @CpfCnpjValido
     private String documento;
 
     @NotBlank
@@ -33,6 +32,13 @@ public class NovaPropostaRequest {
         return documento;
     }
 
+    /**
+     * @param documento = CPF ou CNPJ não pode ser nulo ou vazio
+     * @param email = email valido e não não nulo
+     * @param nome = não pode ser em branco ou nulo
+     * @param endereco = não pode ser em branco ou nulo
+     * @param salario = não pode ser nulo e deve ser maior que 0
+     */
     public NovaPropostaRequest(@NotBlank String documento,
                                @NotBlank @Email String email,
                                @NotBlank String nome,
@@ -43,19 +49,6 @@ public class NovaPropostaRequest {
         this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
-    }
-
-    public boolean documentValid() {
-
-        Assert.hasLength(documento, "não pode validar vazio");
-
-        CPFValidator cpfValidator = new CPFValidator();
-        CNPJValidator cnpjValidator = new CNPJValidator();
-
-        cpfValidator.initialize(null);
-        cnpjValidator.initialize(null);
-
-        return cpfValidator.isValid(this.documento, null) || cnpjValidator.isValid(this.documento, null);
     }
 
     public Proposta toModel() {

@@ -1,9 +1,6 @@
 package br.com.zup.renatomelo.proposta.proposta;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,6 +16,7 @@ public class Proposta {
     private UUID id;
 
     @NotBlank
+    @Column(unique = true)
     private String documento;
 
     @Email
@@ -34,6 +32,17 @@ public class Proposta {
     @Positive
     private BigDecimal salario;
 
+    @Deprecated
+    public Proposta() {
+    }
+
+    /**
+     * @param documento = CPF ou CNPJ não pode ser nulo ou vazio
+     * @param email = email valido e não não nulo
+     * @param nome = não pode ser em branco ou nulo
+     * @param endereco = não pode ser em branco ou nulo
+     * @param salario = não pode ser nulo e deve ser maior que 0
+     */
     public Proposta(@NotBlank String documento,
                     @NotBlank @Email String email,
                     @NotBlank String nome,

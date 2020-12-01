@@ -6,8 +6,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -17,24 +15,19 @@ import java.net.URI;
 public class PropostaController {
 
     @Autowired
-    private VerificaCpfCnpjValidator verificaCpfCnpjValidator;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @InitBinder
-    private void init(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(verificaCpfCnpjValidator);
-    }
+    private PropostaRepository propostaRepository;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<?> receberDados(@RequestBody @Valid NovaPropostaRequest novaProposta,
                                           UriComponentsBuilder uriComponentsBuilder) {
 
+        if(propostaRepository.findByDocumento(novaProposta.getDocumento()).isPresent()) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
         Proposta proposta = novaProposta.toModel();
 
-        entityManager.persist(proposta);
+        propostaRepository.save(proposta);
 
         URI uri = uriComponentsBuilder.path("/api/dados/{id}").buildAndExpand(proposta.getId()).toUri();
 
