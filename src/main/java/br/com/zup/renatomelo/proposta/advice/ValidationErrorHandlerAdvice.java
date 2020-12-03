@@ -1,5 +1,6 @@
 package br.com.zup.renatomelo.proposta.advice;
 
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -43,4 +44,15 @@ public class ValidationErrorHandlerAdvice {
         ErroPadronizado erroPadronizado = new ErroPadronizado(mensagens);
         return ResponseEntity.status(apiErrorException.getHttpStatus()).body(erroPadronizado);
     }
+/*
+    @ExceptionHandler(FeignException.UnprocessableEntity.class)
+    public ResponseEntity<ErroPadronizado> handle(FeignException.FeignClientException feignClientException) {
+        Collection<String> mensagens = new ArrayList<>();
+
+        mensagens.add(feignClientException.getLocalizedMessage());
+
+        ErroPadronizado erroPadronizado = new ErroPadronizado(mensagens);
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erroPadronizado);
+    }*/
 }

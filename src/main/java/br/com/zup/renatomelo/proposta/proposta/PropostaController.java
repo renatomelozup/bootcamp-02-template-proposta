@@ -1,6 +1,11 @@
 package br.com.zup.renatomelo.proposta.proposta;
 
+import br.com.zup.renatomelo.proposta.advice.ApiErrorException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,16 +23,40 @@ public class PropostaController {
     @Autowired
     private PropostaRepository propostaRepository;
 
+    @Autowired
+    private AnaliseCliente analiseCliente;
+
     @PostMapping
     public ResponseEntity<?> receberDados(@RequestBody @Valid NovaPropostaRequest novaProposta,
                                           UriComponentsBuilder uriComponentsBuilder) {
 
         if(propostaRepository.findByDocumento(novaProposta.getDocumento()).isPresent()) {
-            return ResponseEntity.unprocessableEntity().build();
+            String mensagem = String.format("O documento %s já possui cadastro", novaProposta.getDocumento());
+            throw new ApiErrorException(HttpStatus.UNPROCESSABLE_ENTITY, mensagem);
         }
 
         Proposta proposta = novaProposta.toModel();
 
+        propostaRepository.save(proposta);
+
+        AnaliseRequest analiseRequest = new AnaliseRequest(proposta.getDocumento(),
+                proposta.getNome(),
+                proposta.getId().toString());
+
+        ResultadoAnaliseResponse resultadoAnaliseResponse;
+
+        try {
+            resultadoAnaliseResponse = analiseCliente.analise(analiseRequest);
+        } catch (FeignException.UnprocessableEntity unprocessableEntity) {
+            try {
+                resultadoAnaliseResponse = new ObjectMapper().readValue(unprocessableEntity.contentUTF8(),
+                        ResultadoAnaliseResponse.class);
+            } catch (JsonProcessingException jsonProcessingException) {
+                throw new ApiErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Serviço indisponivel");
+            }
+        }
+
+        proposta.setAnalise(resultadoAnaliseResponse.getResultadoSolicitacao());
         propostaRepository.save(proposta);
 
         URI uri = uriComponentsBuilder.path("/api/dados/{id}").buildAndExpand(proposta.getId()).toUri();

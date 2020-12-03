@@ -32,6 +32,8 @@ public class Proposta {
     @Positive
     private BigDecimal salario;
 
+    private String analise;
+
     @Deprecated
     public Proposta() {
     }
@@ -57,5 +59,17 @@ public class Proposta {
 
     public UUID getId() {
         return this.id;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setAnalise(String analise) {
+        this.analise = analise;
     }
 }
