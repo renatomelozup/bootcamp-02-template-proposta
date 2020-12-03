@@ -1,5 +1,6 @@
 package br.com.zup.renatomelo.proposta.proposta;
 
+import br.com.zup.renatomelo.proposta.proposta.model.Proposta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

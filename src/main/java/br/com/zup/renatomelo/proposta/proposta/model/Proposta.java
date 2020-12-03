@@ -1,4 +1,4 @@
-package br.com.zup.renatomelo.proposta.proposta;
+package br.com.zup.renatomelo.proposta.proposta.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

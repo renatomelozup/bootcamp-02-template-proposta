@@ -1,5 +1,7 @@
 package br.com.zup.renatomelo.proposta.proposta;
 
+import br.com.zup.renatomelo.proposta.proposta.request.AnaliseRequest;
+import br.com.zup.renatomelo.proposta.proposta.response.ResultadoAnaliseResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

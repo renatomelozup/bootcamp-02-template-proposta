@@ -1,5 +1,6 @@
-package br.com.zup.renatomelo.proposta.proposta;
+package br.com.zup.renatomelo.proposta.proposta.request;
 
+import br.com.zup.renatomelo.proposta.proposta.model.Proposta;
 import br.com.zup.renatomelo.proposta.proposta.validation.CpfCnpjValido;
 
 import javax.validation.constraints.Email;

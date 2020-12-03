@@ -1,6 +1,12 @@
-package br.com.zup.renatomelo.proposta.proposta;
+package br.com.zup.renatomelo.proposta.proposta.controller;
 
 import br.com.zup.renatomelo.proposta.advice.ApiErrorException;
+import br.com.zup.renatomelo.proposta.proposta.*;
+import br.com.zup.renatomelo.proposta.proposta.model.Proposta;
+import br.com.zup.renatomelo.proposta.proposta.model.StatusProposta;
+import br.com.zup.renatomelo.proposta.proposta.request.AnaliseRequest;
+import br.com.zup.renatomelo.proposta.proposta.request.NovaPropostaRequest;
+import br.com.zup.renatomelo.proposta.proposta.response.ResultadoAnaliseResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
