@@ -32,7 +32,8 @@ public class Proposta {
     @Positive
     private BigDecimal salario;
 
-    private String analise;
+    @Enumerated(EnumType.STRING)
+    private StatusProposta status;
 
     @Deprecated
     public Proposta() {
@@ -69,7 +70,7 @@ public class Proposta {
         return nome;
     }
 
-    public void setAnalise(String analise) {
-        this.analise = analise;
+    public void setEstado(StatusProposta status) {
+        this.status = status;
     }
 }

@@ -7,6 +7,7 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class PropostaController {
     private AnaliseCliente analiseCliente;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<?> receberDados(@RequestBody @Valid NovaPropostaRequest novaProposta,
                                           UriComponentsBuilder uriComponentsBuilder) {
 
@@ -47,16 +49,21 @@ public class PropostaController {
 
         try {
             resultadoAnaliseResponse = analiseCliente.analise(analiseRequest);
+            if (resultadoAnaliseResponse.getResultadoSolicitacao().equalsIgnoreCase("SEM_RESTRICAO")){
+                proposta.setEstado(StatusProposta.ELEGIVEL);
+            }
         } catch (FeignException.UnprocessableEntity unprocessableEntity) {
             try {
                 resultadoAnaliseResponse = new ObjectMapper().readValue(unprocessableEntity.contentUTF8(),
                         ResultadoAnaliseResponse.class);
+                if(resultadoAnaliseResponse.getResultadoSolicitacao().equalsIgnoreCase("COM_RESTRICAO")){
+                    proposta.setEstado(StatusProposta.NAO_ELEGIVEL);
+                }
             } catch (JsonProcessingException jsonProcessingException) {
                 throw new ApiErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Serviço indisponivel");
             }
         }
 
-        proposta.setAnalise(resultadoAnaliseResponse.getResultadoSolicitacao());
         propostaRepository.save(proposta);
 
         URI uri = uriComponentsBuilder.path("/api/dados/{id}").buildAndExpand(proposta.getId()).toUri();
