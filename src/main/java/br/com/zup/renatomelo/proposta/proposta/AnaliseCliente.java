@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(url = "http://localhost:9999",name = "analise")
+@FeignClient(url = "${analise.host}", name = "analise")
 public interface AnaliseCliente {
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/solicitacao", consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     ResultadoAnaliseResponse analise(@RequestBody AnaliseRequest analiseRequest);
 }
