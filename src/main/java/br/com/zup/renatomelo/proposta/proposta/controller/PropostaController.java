@@ -24,7 +24,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/dados")
+@RequestMapping("/api/v1/dados")
 public class PropostaController {
 
     @Autowired
