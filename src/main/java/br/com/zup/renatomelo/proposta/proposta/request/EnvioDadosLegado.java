@@ -1,6 +1,6 @@
 package br.com.zup.renatomelo.proposta.proposta.request;
 
-public class AnaliseRequest {
+public class EnvioDadosLegado {
 
     private String documento;
     private String nome;
@@ -19,10 +19,10 @@ public class AnaliseRequest {
     }
 
     @Deprecated
-    public AnaliseRequest() {
+    public EnvioDadosLegado() {
     }
 
-    public AnaliseRequest(String documento, String nome, String idProposta) {
+    public EnvioDadosLegado(String documento, String nome, String idProposta) {
         this.documento = documento;
         this.nome = nome;
         this.idProposta = idProposta;

@@ -4,7 +4,7 @@ import br.com.zup.renatomelo.proposta.advice.ApiErrorException;
 import br.com.zup.renatomelo.proposta.proposta.*;
 import br.com.zup.renatomelo.proposta.proposta.model.Proposta;
 import br.com.zup.renatomelo.proposta.proposta.model.StatusProposta;
-import br.com.zup.renatomelo.proposta.proposta.request.AnaliseRequest;
+import br.com.zup.renatomelo.proposta.proposta.request.EnvioDadosLegado;
 import br.com.zup.renatomelo.proposta.proposta.request.NovaPropostaRequest;
 import br.com.zup.renatomelo.proposta.proposta.response.ResultadoAnaliseResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,6 +33,9 @@ public class PropostaController {
     @Autowired
     private AnaliseCliente analiseCliente;
 
+    @Autowired
+    private CartaoClient cartaoClient;
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> receberDados(@RequestBody @Valid NovaPropostaRequest novaProposta,
@@ -47,14 +50,14 @@ public class PropostaController {
 
         propostaRepository.save(proposta);
 
-        AnaliseRequest analiseRequest = new AnaliseRequest(proposta.getDocumento(),
+        EnvioDadosLegado envioDadosLegado = new EnvioDadosLegado(proposta.getDocumento(),
                 proposta.getNome(),
                 proposta.getId().toString());
 
         ResultadoAnaliseResponse resultadoAnaliseResponse;
 
         try {
-            resultadoAnaliseResponse = analiseCliente.analise(analiseRequest);
+            resultadoAnaliseResponse = analiseCliente.analise(envioDadosLegado);
             if (resultadoAnaliseResponse.getResultadoSolicitacao().equalsIgnoreCase("SEM_RESTRICAO")){
                 proposta.setEstado(StatusProposta.ELEGIVEL);
             }
@@ -68,6 +71,14 @@ public class PropostaController {
             } catch (JsonProcessingException jsonProcessingException) {
                 throw new ApiErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Serviço indisponivel");
             }
+        } catch (FeignException feignException) {
+            throw new ApiErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Serviço indisponivel");
+        }
+
+        try {
+            cartaoClient.enviarDados(envioDadosLegado);
+        } catch (FeignException.FeignServerException feignServerException) {
+            throw new ApiErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Serviço indisponivel");
         }
 
         propostaRepository.save(proposta);
