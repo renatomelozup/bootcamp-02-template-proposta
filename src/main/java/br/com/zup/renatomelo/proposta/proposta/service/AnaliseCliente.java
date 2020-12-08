@@ -1,4 +1,4 @@
-package br.com.zup.renatomelo.proposta.proposta;
+package br.com.zup.renatomelo.proposta.proposta.service;
 
 import br.com.zup.renatomelo.proposta.proposta.request.EnvioDadosLegado;
 import br.com.zup.renatomelo.proposta.proposta.response.ResultadoAnaliseResponse;

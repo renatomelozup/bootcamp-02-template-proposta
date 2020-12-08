@@ -1,5 +1,6 @@
-package br.com.zup.renatomelo.proposta.proposta;
+package br.com.zup.renatomelo.proposta.proposta.service;
 
+import br.com.zup.renatomelo.proposta.proposta.response.CartaoResponse;
 import br.com.zup.renatomelo.proposta.proposta.request.EnvioDadosLegado;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;

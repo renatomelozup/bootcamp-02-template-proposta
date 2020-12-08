@@ -1,13 +1,15 @@
 package br.com.zup.renatomelo.proposta.proposta.controller;
 
 import br.com.zup.renatomelo.proposta.advice.ApiErrorException;
-import br.com.zup.renatomelo.proposta.proposta.*;
 import br.com.zup.renatomelo.proposta.proposta.model.Proposta;
 import br.com.zup.renatomelo.proposta.proposta.model.StatusProposta;
+import br.com.zup.renatomelo.proposta.proposta.repository.PropostaRepository;
 import br.com.zup.renatomelo.proposta.proposta.request.EnvioDadosLegado;
 import br.com.zup.renatomelo.proposta.proposta.request.NovaPropostaRequest;
 import br.com.zup.renatomelo.proposta.proposta.response.DadosPropostaProjection;
 import br.com.zup.renatomelo.proposta.proposta.response.ResultadoAnaliseResponse;
+import br.com.zup.renatomelo.proposta.proposta.service.AnaliseCliente;
+import br.com.zup.renatomelo.proposta.proposta.service.CartaoClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;

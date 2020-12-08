@@ -1,8 +1,9 @@
-package br.com.zup.renatomelo.proposta.proposta;
+package br.com.zup.renatomelo.proposta.proposta.service;
 
+import br.com.zup.renatomelo.proposta.proposta.repository.PropostaRepository;
 import br.com.zup.renatomelo.proposta.proposta.model.Proposta;
 import br.com.zup.renatomelo.proposta.proposta.model.StatusProposta;
-import br.com.zup.renatomelo.proposta.proposta.request.EnvioDadosLegado;
+import br.com.zup.renatomelo.proposta.proposta.response.CartaoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

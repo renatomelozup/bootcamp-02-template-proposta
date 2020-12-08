@@ -1,4 +1,4 @@
-package br.com.zup.renatomelo.proposta.proposta;
+package br.com.zup.renatomelo.proposta.proposta.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

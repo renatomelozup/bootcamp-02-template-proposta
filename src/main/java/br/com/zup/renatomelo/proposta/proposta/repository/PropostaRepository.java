@@ -1,4 +1,4 @@
-package br.com.zup.renatomelo.proposta.proposta;
+package br.com.zup.renatomelo.proposta.proposta.repository;
 
 import br.com.zup.renatomelo.proposta.proposta.model.Proposta;
 import br.com.zup.renatomelo.proposta.proposta.model.StatusProposta;
