@@ -35,7 +35,8 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private StatusProposta status;
 
-    private String cartaoId;
+    @OneToOne
+    private Cartao cartao;
 
     @Deprecated
     public Proposta() {
@@ -92,7 +93,7 @@ public class Proposta {
         this.status = status;
     }
 
-    public void setCartaoId(String cartaoId) {
-        this.cartaoId = cartaoId;
+    public void setCartao(Cartao cartao) {
+        this.cartao = cartao;
     }
 }

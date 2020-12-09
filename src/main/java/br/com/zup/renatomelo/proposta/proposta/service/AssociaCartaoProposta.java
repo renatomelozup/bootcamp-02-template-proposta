@@ -1,10 +1,15 @@
 package br.com.zup.renatomelo.proposta.proposta.service;
 
+import br.com.zup.renatomelo.proposta.advice.ApiErrorException;
+import br.com.zup.renatomelo.proposta.proposta.model.Cartao;
+import br.com.zup.renatomelo.proposta.proposta.repository.CartaoRepository;
 import br.com.zup.renatomelo.proposta.proposta.repository.PropostaRepository;
 import br.com.zup.renatomelo.proposta.proposta.model.Proposta;
 import br.com.zup.renatomelo.proposta.proposta.model.StatusProposta;
 import br.com.zup.renatomelo.proposta.proposta.response.CartaoResponse;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +21,10 @@ import java.util.List;
 public class AssociaCartaoProposta {
 
     @Autowired
-    private PropostaRepository repository;
+    private PropostaRepository propostaRepository;
+
+    @Autowired
+    private CartaoRepository cartaoRepository;
 
     @Autowired
     private CartaoClient cartaoClient;
@@ -24,13 +32,28 @@ public class AssociaCartaoProposta {
     @Scheduled(initialDelay = 5000, fixedRate = 5000)
     @Transactional
     private void associaCartao() {
-        List<Proposta> listAll = repository.findAllByStatusAndCartaoId(StatusProposta.ELEGIVEL, null);
+        List<Proposta> listAll = propostaRepository.findAllByStatusAndCartaoId(StatusProposta.ELEGIVEL, null);
         List<CartaoResponse> cartaoResponseArrayList = new ArrayList<>();
         listAll.forEach(proposta -> {
-            CartaoResponse cartaoResponse = cartaoClient.checarCartao(proposta.getId().toString());
-            System.out.println(cartaoResponse.getId());
-            proposta.setCartaoId(cartaoResponse.getId());
-            repository.save(proposta);
+
+            Cartao cartao = solicitaCartao(proposta.getId().toString());
+
+            proposta.setCartao(cartao);
+
+            propostaRepository.save(proposta);
+
         });
+    }
+
+    @Transactional
+    private Cartao solicitaCartao(String id) {
+        try {
+            CartaoResponse cartaoResponse = cartaoClient.checarCartao(id);
+            Cartao cartao = cartaoResponse.toModel();
+            cartaoRepository.save(cartao);
+            return cartao;
+        }catch (FeignException.FeignServerException feignServerException) {
+            throw new ApiErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Serviço indisponivel");
+        }
     }
 }
