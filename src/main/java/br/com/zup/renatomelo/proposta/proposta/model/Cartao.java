@@ -18,6 +18,9 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao")
     private List<Biometria> biometriaList = new ArrayList<>();
 
+    @OneToOne
+    private CartaoBloqueio cartaoBloqueio;
+
     @Deprecated
     public Cartao() {
     }
@@ -31,5 +34,13 @@ public class Cartao {
 
     public List<Biometria> getBiometriaList() {
         return biometriaList;
+    }
+
+    public void setCartaoBloqueio(CartaoBloqueio cartaoBloqueio) {
+        this.cartaoBloqueio = cartaoBloqueio;
+    }
+
+    public CartaoBloqueio getCartaoBloqueio() {
+        return cartaoBloqueio;
     }
 }

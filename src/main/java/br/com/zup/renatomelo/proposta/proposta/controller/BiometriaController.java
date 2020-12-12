@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,9 +28,9 @@ public class BiometriaController {
     @Autowired
     private CartaoRepository cartaoRepository;
 
-    @PostMapping
+    @PostMapping("/{idCartao}")
     @Transactional
-    public ResponseEntity<?> cadastrar (@RequestParam UUID idCartao,
+    public ResponseEntity<?> cadastrar (@PathVariable UUID idCartao,
                                         @RequestBody @Valid NovaBiometriaRequest biometria,
                                         UriComponentsBuilder uriComponentsBuilder) {
 

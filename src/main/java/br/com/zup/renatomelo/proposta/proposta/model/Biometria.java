@@ -24,6 +24,10 @@ public class Biometria {
     @JoinColumn(name = "cartaoId")
     private Cartao cartao;
 
+    @Deprecated
+    public Biometria() {
+    }
+
     /**
      * @param biometria = byte[] convertido da string em Base64 referente ao fingerprint da biometria
      */
