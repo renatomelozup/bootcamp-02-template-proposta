@@ -27,4 +27,8 @@ public class CartaoBloqueio {
         this.userAgent = userAgent;
         this.cartao = cartao;
     }
+
+    @Deprecated
+    public CartaoBloqueio() {
+    }
 }

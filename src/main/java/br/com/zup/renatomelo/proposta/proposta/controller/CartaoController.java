@@ -4,6 +4,7 @@ import br.com.zup.renatomelo.proposta.advice.ApiErrorException;
 import br.com.zup.renatomelo.proposta.proposta.model.Biometria;
 import br.com.zup.renatomelo.proposta.proposta.model.Cartao;
 import br.com.zup.renatomelo.proposta.proposta.model.CartaoBloqueio;
+import br.com.zup.renatomelo.proposta.proposta.model.CartaoStatus;
 import br.com.zup.renatomelo.proposta.proposta.repository.BiometriaRepository;
 import br.com.zup.renatomelo.proposta.proposta.repository.CartaoBloqueioRepository;
 import br.com.zup.renatomelo.proposta.proposta.repository.CartaoRepository;
@@ -43,7 +44,7 @@ public class CartaoController {
         }
 
         Cartao cartaoNoBanco = cartaoOptional.get();
-        if(cartaoNoBanco.getCartaoBloqueio() != null) {
+        if(cartaoNoBanco.getStatus() == CartaoStatus.BLOQUEADO) {
             throw new ApiErrorException(HttpStatus.UNPROCESSABLE_ENTITY, "Já bloqueado");
         }
 
@@ -59,6 +60,7 @@ public class CartaoController {
         cartaoBloqueioRepository.save(cartaoBloqueio);
 
         cartaoNoBanco.setCartaoBloqueio(cartaoBloqueio);
+        cartaoNoBanco.setStatus(CartaoStatus.BLOQUEADO);
         cartaoRepository.save(cartaoNoBanco);
 
         return ResponseEntity.ok().build();
