@@ -11,4 +11,5 @@ public interface DadosPropostaProjection {
     String getEndereco();
     BigDecimal getSalario();
     StatusProposta getStatus();
+    CartaoIdentificationProjection getCartao();
 }

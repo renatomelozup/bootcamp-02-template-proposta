@@ -32,6 +32,10 @@ public class Cartao {
         this.numeroCartao = id;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public List<Biometria> getBiometriaList() {
         return biometriaList;
     }

@@ -89,6 +89,10 @@ public class Proposta {
         return status;
     }
 
+    public Cartao getCartao() {
+        return cartao;
+    }
+
     public void setEstado(StatusProposta status) {
         this.status = status;
     }
