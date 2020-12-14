@@ -83,7 +83,7 @@ public class CartaoController {
 
         cartao.get().getBiometriaList().add(novaBiometria);
 
-        URI uri = uriComponentsBuilder.path("/api/v1/cartoes/{id}/biometria").buildAndExpand(novaBiometria.getId()).toUri();
+        URI uri = uriComponentsBuilder.path("/api/v1/cartoes/{id}/biometria/{biometriaId}").buildAndExpand(id.toString(), novaBiometria.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
     }

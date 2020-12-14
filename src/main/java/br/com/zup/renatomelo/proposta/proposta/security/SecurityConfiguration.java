@@ -14,8 +14,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests(authorizeRequests ->
                 authorizeRequests
                         .antMatchers(HttpMethod.POST, "/api/v1/dados/**").hasAuthority("SCOPE_proposta:write")
-                        .antMatchers(HttpMethod.POST, "/api/v1/biometrias/**").hasAuthority("SCOPE_biometrias:write")
                         .antMatchers(HttpMethod.POST, "/api/v1/cartoes/**/bloquear").hasAuthority("SCOPE_cartao:write")
+                        .antMatchers(HttpMethod.POST, "/api/v1/cartoes/**/biometria").hasAuthority("SCOPE_cartao:write")
                         .antMatchers(HttpMethod.GET, "/api/v1/dados/**").hasAuthority("SCOPE_proposta:read")
                         .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .anyRequest().authenticated()
